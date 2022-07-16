@@ -1,5 +1,3 @@
-
-
 class User {
   final String id;
   final String firstName;
@@ -16,6 +14,7 @@ class User {
   final String? nric;
   final String? address;
   final String? postcode;
+  final String? subDuration;
   User(
       {required this.id,
       required this.firstName,
@@ -30,7 +29,8 @@ class User {
       this.image,
       this.mobileNumber,
       this.referal,
-      this.subStartDate});
+      this.subStartDate,
+      this.subDuration});
 
   factory User.fromJson(Map<String, dynamic> userData) {
     return User(
@@ -48,6 +48,7 @@ class User {
       address: userData['Address'] ?? '',
       postcode: userData['Postcode'] ?? '',
       subStartDate: userData['Subscription_Start_date'] ?? '',
+      subDuration: userData['Duration'] ?? '',
     );
   }
 }

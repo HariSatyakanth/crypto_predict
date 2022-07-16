@@ -135,7 +135,7 @@ class _LoginScreenState extends State<LoginScreen>
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: <Widget>[
                           Text(
-                            'Crypto Predict',
+                            'One Dollar Trade',
                             style: TextStyle(fontSize: 18, color: Colors.black),
                           ),
                           Text(

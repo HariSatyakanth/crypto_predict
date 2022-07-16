@@ -152,7 +152,8 @@ class _AppDrawerState extends State<AppDrawer> {
             leading:
                 Icon(Icons.subtitles, color: primarycolor.withOpacity(0.8)),
             onTap: () {
-              Navigator.pushNamed(context, WebViewContainer.routeName);
+              Navigator.pushNamed(context, WebViewContainer.routeName,
+                  arguments: 'http://token.taslasoft.com/member');
             },
           ),
           ListTile(
@@ -160,6 +161,14 @@ class _AppDrawerState extends State<AppDrawer> {
             leading: Icon(Icons.loop, color: primarycolor.withOpacity(0.8)),
             onTap: () {
               Navigator.pushNamed(context, Subscription.routeName);
+            },
+          ),
+          ListTile(
+            title: new Text('Stacking'),
+            leading: Icon(Icons.circle, color: primarycolor.withOpacity(0.8)),
+            onTap: () {
+              Navigator.pushNamed(context, WebViewContainer.routeName,
+                  arguments: 'http://token.taslasoft.com/member/stacking');
             },
           ),
           /* ListTile(

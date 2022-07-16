@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "2896507902",
+    "project_id": "onedollartrade-cfe4f",
+    "storage_bucket": "onedollartrade-cfe4f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2896507902:android:b4dc3e3a117410d8c286af",
+        "android_client_info": {
+          "package_name": "com.tasla.one_dollar_trade"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2896507902-a6tj1iqenhuiucu2p194va3fquiovnce.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMdhqWh1Ec9A1vLR6Q8wLJVty6kwFUjmM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2896507902-a6tj1iqenhuiucu2p194va3fquiovnce.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

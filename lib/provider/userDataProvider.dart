@@ -87,7 +87,7 @@ class UserDataProvider extends ChangeNotifier {
             var res = json.decode(responce.body);
             agentId = res['data']['agent_id'] ?? '';
             agentName = res['data']['Name'] ?? '';
-            // print('From provider $res');
+            print('From provider $res');
             playStoreLink = res['playstoreLink'] ?? '';
             await Future(() {
               return User.fromJson(res['data']);

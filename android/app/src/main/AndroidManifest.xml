@@ -1,8 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.crypto_predict">
+    package="com.tasla.one_dollar_trade">
    <uses-permission android:name="android.permission.INTERNET"/>
    <application
-        android:label="Crypto Predict"
+        android:label="One Dollar Trade"
        android:usesCleartextTraffic="true"
         android:icon="@mipmap/ic_launcher">
         <activity

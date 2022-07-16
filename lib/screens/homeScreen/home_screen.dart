@@ -1,19 +1,22 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:intl/intl.dart';
 import 'package:prediction_app/screens/subscription_screen.dart';
 import 'package:provider/provider.dart';
 
-import 'predictedNumbers_screen.dart';
+import '../../main.dart';
 import '../../provider/userDataProvider.dart';
-import './resultsView.dart';
+
 import '../appdrawer.dart';
 import '../../utils/constants.dart';
 import '../helpPdfScreen.dart';
 import '../../provider/notificationProivder.dart';
-import '../../screens/homeScreen/subscriptionCards.dart';
+
 import '../../screens/userNotification_screen.dart';
-import '../../main.dart';
+
 import '../../provider/coinDataProvider.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -38,36 +41,37 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
 
   @override
   void initState() {
-    //tokenRefresh(context);
-    // FirebaseMessaging.onMessage.listen((RemoteMessage message) {
-    //   Provider.of<NotificationProvider>(context, listen: false)
-    //       .changeNoficicationStatus(true);
-    //   RemoteNotification? notification = message.notification;
-    //   AndroidNotification? android = message.notification?.android;
-    //   if (notification != null && android != null) {
-    //     flutterLocalNotificationsPlugin.show(
-    //       notification.hashCode,
-    //       notification.title,
-    //       notification.body,
-    //       NotificationDetails(
-    //         android: AndroidNotificationDetails(
-    //           channel.id,
-    //           channel.name,
-    //           channel.description,
-    //           icon: 'launch_background',
-    //           playSound: true,
-    //         ),
-    //       ),
-    //     );
-    //   }
-    // });
-    //FirebaseMessaging.instance.subscribeToTopic("resultNotfication");
-    // animationController = AnimationController(
-    //   duration: Duration(milliseconds: 800),
-    //   vsync: this,
-    // );
+    tokenRefresh(context);
+    FirebaseMessaging.onMessage.listen((RemoteMessage message) {
+      Provider.of<NotificationProvider>(context, listen: false)
+          .changeNoficicationStatus(true);
+      RemoteNotification? notification = message.notification;
+      AndroidNotification? android = message.notification?.android;
+      if (notification != null && android != null) {
+        flutterLocalNotificationsPlugin.show(
+          notification.hashCode,
+          notification.title,
+          notification.body,
+          NotificationDetails(
+            android: AndroidNotificationDetails(
+              channel.id,
+              channel.name,
+              icon: 'launch_background',
+              playSound: true,
+            ),
+          ),
+        );
+      }
+    });
 
     super.initState();
+  }
+
+  void subscribeToTheTopic(int isSubscribed) {
+    if (isSubscribed == 1) {
+      print('issubscribed');
+      FirebaseMessaging.instance.subscribeToTopic("coinSubscription");
+    }
   }
 
   @override
@@ -85,6 +89,19 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
   Future<void> getData() async {
     await Provider.of<CoinDataProvider>(context, listen: false)
         .getNewCoinsData();
+  }
+
+  String getSubDate(String? subStartDate, String? duration) {
+    if (subStartDate != null && duration != null) {
+      DateTime _now = DateTime.now();
+      int dur = int.parse(duration);
+      DateTime _date = DateFormat('yyyy-MM-dd').parse(subStartDate);
+      _date = DateTime(_date.year, _date.month + dur, _date.day);
+      Duration day = _now.difference(_date);
+      if (day.inDays < 0) return '';
+      return '${day.inDays} days remaining';
+    }
+    return '';
   }
 
   Widget build(BuildContext context) {
@@ -186,6 +203,12 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 userdata.user.subscription,
                                 style: TextStyle(color: Colors.white),
                               ),
+                              Text(
+                                getSubDate(userdata.user.subStartDate,
+                                    userdata.user.subDuration),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 12),
+                              ),
                             ],
                           )
                         ],
@@ -209,6 +232,7 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
           Consumer<UserDataProvider>(
             builder: (context, user, _) {
               int isSubscribed = user.user.isSubscribed;
+              subscribeToTheTopic(isSubscribed);
               return isSubscribed == 0
                   ? Expanded(
                       child: GestureDetector(
@@ -245,7 +269,9 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                 builder: (context,
                                     AsyncSnapshot<List<Newcoin>?> snapshot) {
                                   if (snapshot.hasData) {
-                                    return snapshot.data == null ||
+                                    List<Newcoin>? list =
+                                        snapshot.data?.reversed.toList();
+                                    return list == null ||
                                             snapshot.data!.isEmpty
                                         ? ListView(
                                             physics:
@@ -258,10 +284,9 @@ class HomeScreenState extends State<HomeScreen> with TickerProviderStateMixin {
                                             ],
                                           )
                                         : ListView.builder(
-                                            itemCount: snapshot.data!.length,
+                                            itemCount: list.length,
                                             itemBuilder: (context, index) {
-                                              return buildCoinCard(
-                                                  snapshot.data![index]);
+                                              return buildCoinCard(list[index]);
                                             },
                                           );
                                   }

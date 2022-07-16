@@ -1,12 +1,15 @@
 import 'dart:async';
 
 import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:prediction_app/provider/coinDataProvider.dart';
 import 'package:prediction_app/provider/membersProvider.dart';
 import 'package:prediction_app/provider/walletProvider.dart';
 import 'package:prediction_app/screens/users.dart';
+import 'package:prediction_app/screens/usersUsers.dart';
 import 'package:prediction_app/screens/webView.dart';
 import 'package:prediction_app/utils/constants.dart';
 import 'package:provider/provider.dart';
@@ -38,46 +41,45 @@ import 'screens/forgotpasswordScreen.dart';
 import './screens/resetPasswordScreen.dart';
 import './provider/coinDataProvider.dart';
 
-// AndroidNotificationChannel channel = AndroidNotificationChannel(
-//   'high_importance_channel',
-//   'High Importance Notifications',
-//   'This channel is used for important notifications.',
-//   importance: Importance.high,
-//   playSound: true,
-// );
+AndroidNotificationChannel channel = AndroidNotificationChannel(
+  'high_importance_channel',
+  'High Importance Notifications',
+  importance: Importance.high,
+  playSound: true,
+);
 
-// final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
-//     FlutterLocalNotificationsPlugin();
+final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+    FlutterLocalNotificationsPlugin();
 
-// Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
-//   await Firebase.initializeApp();
-//   print('Handling a background message ${message.messageId}');
-// }
+Future<void> _firebaseMessagingBackgroundHandler(RemoteMessage message) async {
+  await Firebase.initializeApp();
+  print('Handling a background message ${message.messageId}');
+}
 
-// tokenRefresh(context) {
-//   FirebaseMessaging.instance.onTokenRefresh.listen(
-//     (newtoken) async {
-//       Provider.of<UserDataProvider>(context, listen: false).userToken(newtoken);
-//     },
-//   );
-// }
+tokenRefresh(context) {
+  FirebaseMessaging.instance.onTokenRefresh.listen(
+    (newtoken) async {
+      Provider.of<UserDataProvider>(context, listen: false).userToken(newtoken);
+    },
+  );
+}
 
 void main() async {
-  // WidgetsFlutterBinding.ensureInitialized();
+  WidgetsFlutterBinding.ensureInitialized();
 
-  // await Firebase.initializeApp();
+  await Firebase.initializeApp();
 
-  // FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
-  // await flutterLocalNotificationsPlugin
-  //     .resolvePlatformSpecificImplementation<
-  //         AndroidFlutterLocalNotificationsPlugin>()
-  //     ?.createNotificationChannel(channel);
+  FirebaseMessaging.onBackgroundMessage(_firebaseMessagingBackgroundHandler);
+  await flutterLocalNotificationsPlugin
+      .resolvePlatformSpecificImplementation<
+          AndroidFlutterLocalNotificationsPlugin>()
+      ?.createNotificationChannel(channel);
 
-  // await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
-  //   alert: true,
-  //   badge: true,
-  //   sound: true,
-  // );
+  await FirebaseMessaging.instance.setForegroundNotificationPresentationOptions(
+    alert: true,
+    badge: true,
+    sound: true,
+  );
 
   runApp(MyApp());
 }

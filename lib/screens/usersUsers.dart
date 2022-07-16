@@ -1,26 +1,26 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:prediction_app/provider/membersProvider.dart';
-import 'package:prediction_app/screens/usersUsers.dart';
 import 'package:prediction_app/utils/constants.dart';
 import 'package:provider/provider.dart';
 import '../utils/constants.dart';
 
-class UsersScreen extends StatefulWidget {
-  static const routeName = '/usersScreen';
-  const UsersScreen({Key? key}) : super(key: key);
+class UsersUsersScreen extends StatefulWidget {
+  
+  final String userId;
+  UsersUsersScreen({Key? key, required this.userId}) : super(key: key);
 
   @override
-  _UsersScreenState createState() => _UsersScreenState();
+  _UsersUsersScreenState createState() => _UsersUsersScreenState();
 }
 
-class _UsersScreenState extends State<UsersScreen> {
+class _UsersUsersScreenState extends State<UsersUsersScreen> {
   late Future<List<dynamic>> future;
 
   @override
   void initState() {
-    future =
-        Provider.of<MembersProvider>(context, listen: false).getMembers(null);
+    future = Provider.of<MembersProvider>(context, listen: false)
+        .getMembers(widget.userId);
     super.initState();
   }
 
@@ -39,7 +39,6 @@ class _UsersScreenState extends State<UsersScreen> {
             );
           } else if (snapshot.hasData) {
             List<dynamic>? data = snapshot.data;
-            print(data);
             return data == null || data.isEmpty
                 ? Center(
                     child: Text('No data'),
@@ -51,11 +50,6 @@ class _UsersScreenState extends State<UsersScreen> {
                           ? imagePath + data[index]['Picture']
                           : null;
                       return ListTile(
-                        onTap: () =>
-                            Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => UsersUsersScreen(
-                                      userId: data[index]['Id'],
-                                    ))),
                         leading: imagepath != null
                             ? CachedNetworkImage(
                                 imageUrl: imagepath,

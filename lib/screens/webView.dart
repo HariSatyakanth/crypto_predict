@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/platform_interface.dart';
 import 'package:webview_flutter/webview_flutter.dart';
 
 class WebViewContainer extends StatefulWidget {
@@ -13,7 +12,6 @@ class WebViewContainer extends StatefulWidget {
 }
 
 class _WebViewContainerState extends State<WebViewContainer> {
-  String _url = 'http://token.taslasoft.com/member';
   final _key = UniqueKey();
   late bool isLoading;
   @override
@@ -25,7 +23,8 @@ class _WebViewContainerState extends State<WebViewContainer> {
 
   @override
   Widget build(BuildContext context) {
-    print(_url);
+    String? _url = ModalRoute.of(context)?.settings.arguments as String;
+
     return Scaffold(
       backgroundColor: Colors.white,
       appBar: AppBar(
